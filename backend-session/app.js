@@ -5,12 +5,11 @@ import session from 'express-session';
 import morgan from 'morgan';
 import path from 'path';
 
-import { database } from './db/database.js';
+import { PORT, SessionConfig } from './config.js';
 
 import router from './routes/user.routes.js'
 
 const app = express();
-const PORT = process.env.PORT || 4000;
 
 const __dirname = path.resolve();
 
@@ -26,16 +25,7 @@ app.use(cors({ // Permitir solicitudes desde el front-end
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
-    secret: 'mi_secreto',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { 
-        secure: false, // true solo si usas HTTPS
-        httpOnly: true, // evita acceso a cookie desde JavaScript del cliente
-        // sameSite: 'lax' // permite envío de cookies en navegadores modernos
-    }
-}));
+app.use(session(SessionConfig));
 
 app.use(router)
 

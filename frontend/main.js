@@ -4,7 +4,7 @@
         credentials: 'include' // Importante para enviar las cookies de sesión
     })
 
-    console.log({ response })
+    console.log("datos", response )
 
 
     if (response.ok) {

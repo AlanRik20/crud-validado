@@ -1,6 +1,6 @@
-import { database } from '../db/database.js'
+import { database } from '../config.js'
 
-
+// INICIO DE SESIÓN
 export const loginVerify = async (req, res) => {
     const { username, password } = req.body;
 
@@ -30,6 +30,27 @@ export const loginVerify = async (req, res) => {
     }
 };
 
+export const RegisterUser = async(req,res)=>{
+    const {username, password} = req.body
+    try {
+        const conex= await database()
+
+        const [userExist] = await conex.execute('SELECT id FROM users WHERE username = ?',[username])
+        if(userExist.length>0){
+            return res.status(400).json({ message: 'El nombre de usuario ya está en uso' });
+        }
+
+        const [consulta] = await conex.execute('INSERT INTO users (username, password) VALUES (?,?)',[username, password])
+
+        return res.status(201).json({ message: 'Usuario registrado exitosamente' });
+
+    } catch (err) {
+        console.error('Error al conectar a la base de datos:', err);
+        return res.status(500).json({ message: 'Error interno del servidor' });
+    }
+    
+}
+// CREAR UNA SESIÓN
 export const CreateSession = async (req, res) => {
     try {
         
@@ -47,17 +68,15 @@ export const CreateSession = async (req, res) => {
     }
 }
 
-// app.get('/session', (req, res) => {
-// });
+// CERRAR SESIÓN
+export const Logout = async(req,res)=>{
 
-// // Ruta para cerrar la sesión
-// app.post('/logout', (req, res) => {
-//     console.log(req.session)
-//     req.session.destroy(err => {
-//         if (err) {
-//             return res.status(500).json({ message: 'Error al cerrar la sesión' });
-//         }
-//         res.clearCookie('connect.sid'); // Nombre de cookie por defecto para express-session
-//         return res.json({ message: 'Sesión cerrada exitosamente' });
-//     });
-// });
+        req.session.destroy(err => {
+            if (err) {
+                return res.status(500).json({ message: 'Error al cerrar la sesión' });
+            }
+            res.clearCookie('connect.sid'); // Nombre de cookie por defecto para express-session
+            return res.json({ message: 'Sesión cerrada exitosamente' });
+        });
+}
+
