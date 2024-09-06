@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-import { SECRET_KEY } from '../config/env.js';
+import { SECRET_KEY } from '../config.js';
 import { database } from '../config.js';
 
 // Middleware para verificar el token JWT

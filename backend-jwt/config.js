@@ -21,3 +21,6 @@ export const SessionConfig={
     saveUninitialized: true,
     cookie: { secure: false } // Usar 'true' si usas HTTPS
 }
+
+export const PORT=4000
+export const SECRET_KEY="aopz9-3fliw12-4ja94f-614jzg8"

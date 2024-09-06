@@ -5,8 +5,7 @@ import session from 'express-session';
 import cors from 'cors';
 
 import morgan from 'morgan';
-import { PORT } from './config/env.js';
-import { SessionConfig } from './config.js';
+import { SessionConfig, PORT } from './config.js';
 import router from './routes/auth.routes.js';
 
 
